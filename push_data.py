@@ -74,3 +74,5 @@ if __name__=='__main__':
     no_of_records=networkobj.insert_data_mongodb(records=records,database=DATABASE,collection=Collection)
 
     print(no_of_records)
+
+#Extract --> Transform --> Load
