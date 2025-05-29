@@ -9,7 +9,7 @@ from scipy.stats import ks_2samp
 import pandas as pd
 import os,sys
 
-class DataVaildation:
+class DataValidation:
     def __init__(self,data_ingestion_artifact:DataIngestionArtifact,
                  data_validation_config:DataValidationConfig):
         
@@ -74,20 +74,25 @@ class DataVaildation:
             test_file_path=self.data_ingestion_artifact.testing_file_path
 
             ## read the data from train and test
-            train_dataframe=DataVaildation.read_data(train_file_path)
-            test_dataframe=DataVaildation.read_data(test_file_path)
+            train_dataframe=DataValidation.read_data(train_file_path)
+            test_dataframe=DataValidation.read_data(test_file_path)
 
             ##validate number of the columns
-            status=self.validation_number_of_columns(dataframe=train_dataframe)
+            status = self.validation_number_of_columns(dataframe=train_dataframe)
+
             if not status:
                 expected_columns = [list(col_dict.keys())[0] for col_dict in self.schema_config['columns']]
                 missing = set(expected_columns) - set(train_dataframe.columns)
-                raise Exception(f"Train dataframe missing columns: {missing}")
+                if missing:
+                    raise Exception(f"Train dataframe missing columns: {missing}")
 
 
-            status=self.validation_number_of_columns(dataframe=test_dataframe)
-            if not status:
-                raise Exception("Test dataframe does not contain all columns")
+
+            expected_columns = [list(col_dict.keys())[0] for col_dict in self.schema_config['columns']]
+            missing = set(expected_columns) - set(test_dataframe.columns)
+            if missing:
+                raise Exception(f"Test dataframe missing columns: {missing}")
+
 
             #validate numerical columns
             numerical_columns = self.schema_config['numerical_columns']

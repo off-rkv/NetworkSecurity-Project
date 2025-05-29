@@ -60,6 +60,17 @@ class DataIngestion:
 
     def split_data_as_train_test_split(self,dataframe:pd.DataFrame):
         try:
+            columns_to_drop = ['id', 'UrlLengthRT',
+                                    'PctNullSelfRedirectHyperlinksRT',
+                                    'PctExtResourceUrlsRT',
+                                    'RelativeFormAction',
+                                    'AbnormalExtFormActionR',
+                                    'AtSymbol',
+                                    'FakeLinkInStatusBar',
+                                    'ImagesOnlyInForm']
+            
+            dataframe = dataframe.drop(columns=[col for col in columns_to_drop if col in dataframe.columns], axis=1)
+            
             train_set,test_set=train_test_split(
                 dataframe,test_size=self.data_ingestion_config.train_test_split_ratio
             )
