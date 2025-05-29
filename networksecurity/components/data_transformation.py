@@ -6,7 +6,7 @@ from sklearn.pipeline import Pipeline
 
 from networksecurity.constant.training_pipeline import TARGET_COLUMN
 from networksecurity.constant.training_pipeline import DATA_TRANSFORMATION_IMPUTER_PARAMS
-
+from sklearn.preprocessing import StandardScaler
 from networksecurity.entity.artifact_entity import(
     DataTransformationArtifact,
     DataValidationArtifact
@@ -53,9 +53,10 @@ class DataTransformation:
 
         try:
             imputer:KNNImputer=KNNImputer(**DATA_TRANSFORMATION_IMPUTER_PARAMS) #**key value pair
+            scaler = StandardScaler()
             logging.info(f'Initialise KNNImputer with {DATA_TRANSFORMATION_IMPUTER_PARAMS}')
 
-            processor:Pipeline=Pipeline([('imputer',imputer)])
+            processor:Pipeline=Pipeline([('imputer',imputer),("scaler",scaler)])
 
             return processor
         
@@ -90,7 +91,7 @@ class DataTransformation:
             train_arr=np.c_[transformed_input_train_feature,np.array(target_feature_train_df)]
             test_arr=np.c_[transformed_input_test_feature,np.array(target_feature_test_df)]
 
-            save_numpy_array_data(self.data_transformation_config.transformed_object_file_path,array=train_arr,)
+            save_numpy_array_data(self.data_transformation_config.transformed_train_file_path,array=train_arr,)
             save_numpy_array_data(self.data_transformation_config.transformed_test_file_path,array=test_arr,)
             save_object(self.data_transformation_config.transformed_object_file_path,preprocessor_object,)
 
