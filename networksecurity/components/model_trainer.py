@@ -84,14 +84,28 @@ class ModelTrainer:
                 'min_samples_split': [2, 5]
             },
 
-            "Logistic Regression": {
-                "penalty": ['l1', 'l2', 'elasticnet'],
-                "C": [0.01, 0.1, 1, 10, 100],
-                "solver": ['saga'],
-                "max_iter": [100, 200],
-                "l1_ratio": [0, 0.5, 1]  # needed if using elasticnet
-            },
-
+            "Logistic Regression": [
+                {
+                    "penalty": ['l1'],
+                    "C": [0.01, 0.1, 1, 10, 100],
+                    "solver": ['saga'],
+                    "max_iter": [500, 1000]
+                },
+                {
+                    "penalty": ['l2'],
+                    "C": [0.01, 0.1, 1, 10, 100],
+                    "solver": ['saga'],
+                    "max_iter": [500, 1000]
+                },
+                {
+                    "penalty": ['elasticnet'],
+                    "C": [0.01, 0.1, 1, 10, 100],
+                    "solver": ['saga'],
+                    "max_iter": [1000, 2000],
+                    "l1_ratio": [0, 0.5, 1]
+                }
+            ],
+            
             "AdaBoost": {
                 'n_estimators': [50, 100, 200],
                 'learning_rate': [0.01, 0.1, 1.0],
