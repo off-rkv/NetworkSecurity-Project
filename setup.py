@@ -16,7 +16,7 @@ def get_requirements()->List[str]:
             #Process each line
             for line in lines:
                 requirement=line.strip() # remove the space
-                ##ignore the empty lines and '-e.', "-e. is trigged all the above line it is refer the 'setup.py' file "
+                ##ignore the empty lines and '-e.', "-e. is trigged all the above line, it is refer the 'setup.py' file "
                 if requirement and requirement!='-e.':
                     requirement_lst.append(requirement)
     except FileNotFoundError:
